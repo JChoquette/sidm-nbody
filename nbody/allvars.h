@@ -396,9 +396,10 @@ extern struct global_data_all_processes
   int     OutputListLength;
   
 #ifdef SIDM
-  double  CrossSection;            /* hinverse cm2/g */
+  double  CrossSection[6];            /* hinverse cm2/g */
       /* CROSS_SECTION_TYPE=1 => CrossSection=sigma*(v km/s) hinv cm2/g */
-  double  CrossSectionInternal;
+  double  CrossSectionInternal[6];
+  double  CrossSectionInternalMax;
 #if (CROSS_SECTION_TYPE == 2 || CROSS_SECTION_TYPE == 4)
   double  YukawaVelocity;
 #elif (CROSS_SECTION_TYPE == 3)

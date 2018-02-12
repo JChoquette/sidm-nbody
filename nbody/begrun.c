@@ -153,7 +153,11 @@ void set_units(void)
   All.Hubble = HUBBLE * All.UnitTime_in_s;
 
 #ifdef SIDM
-  All.CrossSectionInternal = All.CrossSection*All.UnitMass_in_g/pow(All.UnitLength_in_cm,2);
+  All.CrossSectionInternalMax=0.0;
+  for(int i = 0; i < 5; i++) {
+	  All.CrossSectionInternal[i] = All.CrossSection[i]*All.UnitMass_in_g/pow(All.UnitLength_in_cm,2);
+	  if(All.CrossSectionInternal[i]>All.CrossSectionInternalMax)All.CrossSectionInternalMax = All.CrossSectionInternal[i];
+  }
 #endif
 
   if(ThisTask==0)
@@ -166,8 +170,8 @@ void set_units(void)
       fprintf(stdout, "UnitDensity_in_cgs = %g \n",All.UnitDensity_in_cgs);
       fprintf(stdout, "UnitEnergy_in_cgs = %g \n", All.UnitEnergy_in_cgs);
 #ifdef SIDM
-      fprintf(stdout, "CrossSection = %g \n", All.CrossSection);
-      fprintf(stdout, "CrossSectionInternal = %g \n", All.CrossSectionInternal);
+      fprintf(stdout, "CrossSection = %g \n", All.CrossSection[1]);
+      fprintf(stdout, "CrossSectionInternal = %g \n", All.CrossSectionInternal[1]);
 #if (CROSS_SECTION_TYPE == 2)
      fprintf(stdout, "YukawaVelocity vc = %g \n", All.YukawaVelocity); 
 #endif
@@ -569,9 +573,27 @@ void read_parameter_file(char *fname)
       id[nt++]=DOUBLE;
       
 #ifdef SIDM
-      strcpy(tag[nt],"CrossSection"); 
-      addr[nt]=&All.CrossSection;
+      strcpy(tag[nt],"CrossSection1");
+      addr[nt]=&All.CrossSection[1];
       id[nt++]=DOUBLE;
+
+      strcpy(tag[nt],"CrossSection2");
+      addr[nt]=&All.CrossSection[2];
+      id[nt++]=DOUBLE;
+
+      strcpy(tag[nt],"CrossSection3");
+      addr[nt]=&All.CrossSection[3];
+      id[nt++]=DOUBLE;
+
+      strcpy(tag[nt],"CrossSection4");
+      addr[nt]=&All.CrossSection[4];
+      id[nt++]=DOUBLE;
+
+      strcpy(tag[nt],"CrossSection5");
+      addr[nt]=&All.CrossSection[5];
+      id[nt++]=DOUBLE;
+
+
 
       strcpy(tag[nt],"RandomSeed1"); 
       addr[nt]=&All.Seed1;

@@ -71,13 +71,13 @@ void sidm(void)
   MPI_Status status;
   
   double  dt_h0;
-  double  rand, C_Pmax, P_max, Prob;
+  double  rand, C_Pmax[6], P_max, Prob;
   double  rv, rvx, rvy, rvz;
   double  rmass;
   double  nx[3];
   double  dvx, dvy, dvz;
   double  s_a, s_a_inverse;
-  double  CrossSectionCo;
+  double  CrossSectionCo[6];
   int    nscat[3], nscatTot[3]; 
 
 #if (CROSS_SECTION_TYPE == 2)
@@ -228,46 +228,52 @@ void sidm(void)
            (1-All.Omega0-All.OmegaLambda)+pow(All.Time,3)*All.OmegaLambda);
       s_a_inverse= 1/s_a;
 #if (CROSS_SECTION_TYPE == 0)
-      CrossSectionCo = All.CrossSectionInternal/pow(All.Time,2);  
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++){
+    	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
+    	  C_Pmax[i]= SAFEFACTOR *
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-	      CrossSectionCo;
+	      CrossSectionCo[i];
+      }
 #elif (CROSS_SECTION_TYPE == 1)
-      CrossSectionCo = All.CrossSectionInternal/pow(All.Time,2.5);
+      for(i=0; i<5; i++){
+    	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2.5);
       // a^(1/2) factor considers that in s_a_inverse
-      C_Pmax= SAFEFACTOR * 
+    	  C_Pmax[i]= SAFEFACTOR *
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
-              CrossSectionCo;
+              CrossSectionCo[i];
+      }
 #elif (CROSS_SECTION_TYPE == 2)
-      CrossSectionCo = All.CrossSectionInternal/pow(All.Time,2);  
+      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
       vc= All.YukawaVelocity/sqrt(All.Time); /* In internal unit */
       if(2.0*vmax < vc/sqrt(3.0)) {
 	beta= 2.0*vmax/vc;
 	v_dep= 1.0/(1.0 + beta*beta);
-	C_Pmax= SAFEFACTOR * 
+	for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	        BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        2.0*vmax*v_dep*v_dep*
-                CrossSectionCo;
+                CrossSectionCo[i];
       }
       else {
-	C_Pmax= SAFEFACTOR * 
+    	  for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
                 BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        (3.0*sqrt(3.0)/16.0)*vc*
-                CrossSectionCo;
+                CrossSectionCo[i];
       }
 #elif (CROSS_SECTION_TYPE == 3)
-      CrossSectionCo = All.CrossSectionInternal/pow(All.Time, 2);
+      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time, 2);
       n_cross_section= All.CrossSectionPowLaw;
       v_scale= All.CrossSectionVelScale;
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*v_scale*
-	      CrossSectionCo;
+	      CrossSectionCo[i];
 #elif (CROSS_SECTION_TYPE == 4)
       vc= All.YukawaVelocity/sqrt(All.Time);
-      CrossSectionCo = All.CrossSectionInternal/pow(All.Time,2);  
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++){
+    	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
+    	  C_Pmax[i]= SAFEFACTOR *
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-	      CrossSectionCo;
+	      CrossSectionCo[i];
+      }
 
 #endif
     }
@@ -275,44 +281,44 @@ void sidm(void)
     else{
       s_a_inverse= 1.0;
 #if (CROSS_SECTION_TYPE == 0)
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-              All.CrossSectionInternal;
+              All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 1)
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
-              All.CrossSectionInternal;
+              All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 2)
       vc= All.YukawaVelocity;
       if(2.0*vmax < vc/sqrt(3.0)) {
 	beta= 2.0*vmax/vc;
 	v_dep= 1.0/(1.0 + beta*beta);
-	C_Pmax= SAFEFACTOR * 
+	for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	        BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        2.0*vmax*v_dep*v_dep*
-	        All.CrossSectionInternal;
+	        All.CrossSectionInternal[i];
       }
       else {
-	C_Pmax= SAFEFACTOR * 
+    	  for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
                 BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
                 (3.0*sqrt(3.0)/16.0)*vc*
-	        All.CrossSectionInternal;
+	        All.CrossSectionInternal[i];
       }
 #elif (CROSS_SECTION_TYPE == 3)
       n_cross_section= All.CrossSectionPowLaw;
       v_scale= All.CrossSectionVelScale;
 
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*v_scale*
-              All.CrossSectionInternal;
+              All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 4)
       vc= All.YukawaVelocity;
-      C_Pmax= SAFEFACTOR * 
+      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-              All.CrossSectionInternal;
+              All.CrossSectionInternal[i];
 
 #endif
-      CrossSectionCo = All.CrossSectionInternal;
+      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i];
     }
 
     /* For each active particles */
@@ -335,7 +341,7 @@ void sidm(void)
       SidmDataResult[i].dv[2] = 0.0;
       SidmTarget[i] = 0; /* for security */
 
-      P_max = C_Pmax*SidmDataIn[i].Mass*hinv3*dt_h0;
+      P_max = C_Pmax[SidmDataIn[i].Type]*SidmDataIn[i].Mass*hinv3*dt_h0;
       // This P_max is not correct if Masses are different. 
 
       rand = ran2(&iseed);
@@ -369,17 +375,17 @@ void sidm(void)
         rv  = sqrt(rvx*rvx + rvy*rvy + rvz*rvz);
 
 #if (CROSS_SECTION_TYPE == 0)
-        Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo*dt_h0;
+        Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #elif (CROSS_SECTION_TYPE == 1)
-        Prob += 0.5*P[j].Mass*wk*   CrossSectionCo*dt_h0;
+        Prob += 0.5*P[j].Mass*wk*   CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #elif (CROSS_SECTION_TYPE == 2)
 	beta= rv/vc;
 	v_dep= 1.0/(1.0+beta*beta);
-	Prob += 0.5*P[j].Mass*wk*rv*v_dep*v_dep*CrossSectionCo*dt_h0;
+	Prob += 0.5*P[j].Mass*wk*rv*v_dep*v_dep*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #elif (CROSS_SECTION_TYPE == 3)
-        Prob += 0.5*P[j].Mass*wk*rv*pow(rv/v_scale, n_cross_section)*CrossSectionCo*dt_h0;
+        Prob += 0.5*P[j].Mass*wk*rv*pow(rv/v_scale, n_cross_section)*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #elif (CROSS_SECTION_TYPE == 4)
-        Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo*dt_h0;
+        Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #endif
 
         if(Prob < rand)

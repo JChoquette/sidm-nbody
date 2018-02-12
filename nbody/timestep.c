@@ -22,7 +22,7 @@ void find_timesteps(int mode)
   double dt2;
 #endif
 #ifdef SIDM
-  double C_max, dt_sidm;
+  double C_max[6], C_maxP, dt_sidm;
   double h, hinv, hinv3;
   double C_Grho, dt_Grho; // For Grho timestep
 
@@ -53,38 +53,38 @@ void find_timesteps(int mode)
 #ifdef SIDM
 
 #if (CROSS_SECTION_TYPE == 0)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-            All.CrossSectionInternal/pow(All.Time,2)/s_a;
+            All.CrossSectionInternal[i]/pow(All.Time,2)/s_a;
 #elif (CROSS_SECTION_TYPE == 1)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
-            All.CrossSectionInternal/pow(All.Time,2.5)/s_a;
+            All.CrossSectionInternal[i]/pow(All.Time,2.5)/s_a;
 #elif (CROSS_SECTION_TYPE == 2)
     vc= All.YukawaVelocity/sqrt(All.Time); /* In internal unit */
     if(2.0*vmax < vc/sqrt(3.0)) {
       beta= 2.0*vmax/vc;
       v_dep= 1.0/(1.0 + beta*beta);
-      C_max = SAFEFACTOR * 
+      for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	      2.0*vmax*v_dep*v_dep*
-              All.CrossSectionInternal/pow(All.Time,2)/s_a;
+              All.CrossSectionInternal[i]/pow(All.Time,2)/s_a;
     }
     else {
-      C_max = SAFEFACTOR * 
+      for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
               (3.0*sqrt(3.0)/16.0)*vc*
-              All.CrossSectionInternal/pow(All.Time,2)/s_a;
+              All.CrossSectionInternal[i]/pow(All.Time,2)/s_a;
     }
 #elif (CROSS_SECTION_TYPE == 3)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
-            All.CrossSectionInternal/pow(All.Time,2.0)*2*All.CrossSectionVelScale/s_a;
+            All.CrossSectionInternal[i]/pow(All.Time,2.0)*2*All.CrossSectionVelScale/s_a;
 #elif (CROSS_SECTION_TYPE == 4)
     //vc= All.YukawaVelocity/sqrt(All.Time);
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-            All.CrossSectionInternal/pow(All.Time,2)/s_a;
+            All.CrossSectionInternal[i]/pow(All.Time,2)/s_a;
 #endif
 
 #endif
@@ -95,37 +95,37 @@ void find_timesteps(int mode)
 #ifdef SIDM
 
 #if (CROSS_SECTION_TYPE == 0)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-            All.CrossSectionInternal;
+            All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 1)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
-            All.CrossSectionInternal;
+            All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 2)
     vc= All.YukawaVelocity;
     if(2.0*vmax < vc/sqrt(3.0)) {
       v_dep= 1.0/(1.0 + 2.0*vmax/vc);
-      C_max = SAFEFACTOR * 
+      for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	      2.0*vmax*v_dep*v_dep*
-	      All.CrossSectionInternal;
+	      All.CrossSectionInternal[i];
     }
     else {
-      C_max = SAFEFACTOR * 
+      for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
               (3.0*sqrt(3.0)/16.0)*vc*
-	      All.CrossSectionInternal;
+	      All.CrossSectionInternal[i];
     }
 #elif (CROSS_SECTION_TYPE == 3)
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*All.CrossSectionVelScale*
-            All.CrossSectionInternal;
+            All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 4)
     //vc= All.YukawaVelocity;
-    C_max = SAFEFACTOR * 
+    for(i=0;i<=5;i++)C_max[i] = SAFEFACTOR * 
             BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
-            All.CrossSectionInternal;
+            All.CrossSectionInternal[i];
 
 #endif
 #endif
@@ -248,10 +248,13 @@ void find_timesteps(int mode)
       h = P[i].HsmlVelDisp;
       hinv  = 1.0/h;
       hinv3 = hinv*hinv*hinv;
-      dt_sidm = All.ProbabilityTol/(C_max*P[i].Mass*hinv3);
+      C_maxP = C_max[P[i].Type]; 
+      if(C_maxP>0.0){
+          dt_sidm = All.ProbabilityTol/(C_maxP*P[i].Mass*hinv3);
+          if(dt_sidm < dt)dt= dt_sidm;
+      }
       
-      if(dt_sidm < dt)
-	dt= dt_sidm;
+      
 
       // Additional G rho timestep criterion sep 23, 2005
       if(All.ComovingIntegrationOn) 

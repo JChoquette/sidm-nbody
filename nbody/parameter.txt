@@ -12,8 +12,8 @@
 %
 
 
-InitCondFile   eddington_nfw_far_80_in
-OutputDir      ./
+InitCondFile   twocomp1e2_random
+OutputDir      ./out
 
 EnergyFile        energy_out
 InfoFile          info_out
@@ -27,7 +27,11 @@ SnapshotFileBase  snp
 
 % CrossSection is in cm^2/g for non-cosmological simulation
 % 1/h cm^2/g for cosmological simulation
-CrossSection      38.2614         # cm2/g
+CrossSection1      100.0         # cm2/g
+CrossSection2      0
+CrossSection3      0
+CrossSection4      0
+CrossSection5      0
 % in internal unit this is sigma0.internal = m.unit/l.unit^2*sigma = 79.9272
 
 % Relaxation time is
@@ -67,7 +71,7 @@ ReflectionBoundary  1114.35    # 100 r_c
 
 % CPU-time limit
 
-TimeLimitCPU      86400.0
+TimeLimitCPU      99986400.0
 ResubmitOn        0
 ResubmitCommand   xyz
 
@@ -174,10 +178,11 @@ SofteningGas       600.0
 SofteningHalo      0.3  % Important; make this small enough
 SofteningDisk      0.0
 SofteningBulge     0.0           
-SofteningStars     0.0
+SofteningStars     0.3
 
 SofteningGasMaxPhys       200.0
 SofteningHaloMaxPhys      0.3
 SofteningDiskMaxPhys      0.0
 SofteningBulgeMaxPhys     0.0           
-SofteningStarsMaxPhys     0.0
+SofteningStarsMaxPhys     0.3
+
