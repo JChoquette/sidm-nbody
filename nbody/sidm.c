@@ -452,9 +452,11 @@ void sidm(void)
 #if (CROSS_SECTION_TYPE < 4)
 	// isotropic scattering
 	random_direction(nx);
-	dvx= rmass*(-rvx+rv*nx[0]);
-	dvy= rmass*(-rvy+rv*nx[1]);
-	dvz= rmass*(-rvz+rv*nx[2]);
+	float dvcm = sqrt(pow(rv,2)-4*All.DissipativeLoss/rmass*pow(C/All.UnitVelocity_in_cm_per_s,2));
+	if(dvcm!=dvcm) dvcm=rv;
+	dvx= rmass*(-rvx+dvcm*nx[0]);
+	dvy= rmass*(-rvy+dvcm*nx[1]);
+	dvz= rmass*(-rvz+dvcm*nx[2]);
 #endif
 	
         SidmDataResult[i].dv[0]= dvx;
@@ -570,9 +572,9 @@ void sidm(void)
           endrun(0);
         }
 	// Oct 9,2005 Vel[] => dVel[] -=-> =-
-        P[SidmTarget[j]].dVel[0] = -SidmDataResult[j].dv[0];
-        P[SidmTarget[j]].dVel[1] = -SidmDataResult[j].dv[1];
-        P[SidmTarget[j]].dVel[2] = -SidmDataResult[j].dv[2];
+        P[SidmTarget[j]].dVel[0] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[0];
+        P[SidmTarget[j]].dVel[1] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[1];
+        P[SidmTarget[j]].dVel[2] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[2];
         
 #ifdef SCATTERLOG
         /* Scatter Log */
