@@ -223,19 +223,20 @@ void sidm(void)
        ==> s_a_inverse da = a^{-1/2} dt
        ==> s_a_inverse da v_internal= a^{-1} v_phys dt = dx_comoving  
     */
+
     if(All.ComovingIntegrationOn) {
       s_a= All.Hubble*sqrt(All.Omega0 + All.Time*
            (1-All.Omega0-All.OmegaLambda)+pow(All.Time,3)*All.OmegaLambda);
       s_a_inverse= 1/s_a;
 #if (CROSS_SECTION_TYPE == 0)
-      for(i=0; i<5; i++){
+      for(i=0; i<=5; i++){
     	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
     	  C_Pmax[i]= SAFEFACTOR *
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
 	      CrossSectionCo[i];
       }
 #elif (CROSS_SECTION_TYPE == 1)
-      for(i=0; i<5; i++){
+      for(i=0; i<=5; i++){
     	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2.5);
       // a^(1/2) factor considers that in s_a_inverse
     	  C_Pmax[i]= SAFEFACTOR *
@@ -243,32 +244,32 @@ void sidm(void)
               CrossSectionCo[i];
       }
 #elif (CROSS_SECTION_TYPE == 2)
-      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
+      for(i=0; i<=5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
       vc= All.YukawaVelocity/sqrt(All.Time); /* In internal unit */
       if(2.0*vmax < vc/sqrt(3.0)) {
 	beta= 2.0*vmax/vc;
 	v_dep= 1.0/(1.0 + beta*beta);
-	for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+	for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	        BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        2.0*vmax*v_dep*v_dep*
                 CrossSectionCo[i];
       }
       else {
-    	  for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+    	  for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
                 BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        (3.0*sqrt(3.0)/16.0)*vc*
                 CrossSectionCo[i];
       }
 #elif (CROSS_SECTION_TYPE == 3)
-      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time, 2);
+      for(i=0; i<=5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time, 2);
       n_cross_section= All.CrossSectionPowLaw;
       v_scale= All.CrossSectionVelScale;
-      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+      for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*v_scale*
 	      CrossSectionCo[i];
 #elif (CROSS_SECTION_TYPE == 4)
       vc= All.YukawaVelocity/sqrt(All.Time);
-      for(i=0; i<5; i++){
+      for(i=0; i<=5; i++){
     	  CrossSectionCo[i] = All.CrossSectionInternal[i]/pow(All.Time,2);
     	  C_Pmax[i]= SAFEFACTOR *
               BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
@@ -281,11 +282,11 @@ void sidm(void)
     else{
       s_a_inverse= 1.0;
 #if (CROSS_SECTION_TYPE == 0)
-      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+      for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
               All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 1)
-      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+      for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
               All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 2)
@@ -293,13 +294,13 @@ void sidm(void)
       if(2.0*vmax < vc/sqrt(3.0)) {
 	beta= 2.0*vmax/vc;
 	v_dep= 1.0/(1.0 + beta*beta);
-	for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+	for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	        BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
 	        2.0*vmax*v_dep*v_dep*
 	        All.CrossSectionInternal[i];
       }
       else {
-    	  for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+    	  for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
                 BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*
                 (3.0*sqrt(3.0)/16.0)*vc*
 	        All.CrossSectionInternal[i];
@@ -308,17 +309,17 @@ void sidm(void)
       n_cross_section= All.CrossSectionPowLaw;
       v_scale= All.CrossSectionVelScale;
 
-      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+      for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*v_scale*
               All.CrossSectionInternal[i];
 #elif (CROSS_SECTION_TYPE == 4)
       vc= All.YukawaVelocity;
-      for(i=0; i<5; i++)C_Pmax[i]= SAFEFACTOR *
+      for(i=0; i<=5; i++)C_Pmax[i]= SAFEFACTOR *
 	      BALLINVERSE*(All.DesNumNgb+All.MaxNumNgbDeviation)*2*vmax*
               All.CrossSectionInternal[i];
 
 #endif
-      for(i=0; i<5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i];
+      for(i=0; i<=5; i++)CrossSectionCo[i] = All.CrossSectionInternal[i];
     }
 
     /* For each active particles */
@@ -387,11 +388,13 @@ void sidm(void)
 #elif (CROSS_SECTION_TYPE == 4)
         Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #endif
-
+        if(Prob>0 && SidmDataIn[i].Type>1) printf("P>0 FOR WRONG PARTICLE TYPE");
+        if(SidmDataIn[i].Type >1) printf("BAD CS: P1.Type=%i CS=%g\n",SidmDataIn[i].Type,CrossSectionCo[SidmDataIn[i].Type]);
         if(Prob < rand)
           continue;
+	if((P[j].Type & 7) >1) printf("BAD SCATTER: P1.Type=%i P2.Type=%i\n",SidmDataIn[i].Type,P[j].Type & 7);
 
-	SidmTarget[i] = j;        
+	SidmTarget[i] = j;
         rmass = P[j].Mass / (SidmDataIn[i].Mass + P[j].Mass);
 
 #if (CROSS_SECTION_TYPE == 4)
@@ -513,7 +516,7 @@ void sidm(void)
           place= nbuffer + (ncount-nexport);
         
         P[i].NgbVelDisp = SidmDataResult[place].Ngb;
-        
+
         // Check # of neighbours
         if(P[i].NgbVelDisp < (All.DesNumNgb-All.MaxNumNgbDeviation) || 
 	   (P[i].NgbVelDisp > (All.DesNumNgb+All.MaxNumNgbDeviation))) {

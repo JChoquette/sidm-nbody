@@ -4,16 +4,13 @@ allvars.h:
 
 begrun.c:
 157:    
-In addition to small changes to make the internal cross section an array, calculate the max internal cross section
+Small changes to make the internal cross section an array
 Added lines to read 5 cross sections from the parameter file
 
 sidm.c:
 Turned CrossSectionCo, C_Pmax, Pmax into arrays
 
-timestep.c
-Introduced a new variable, All.CrossSectionInternalMax. This will be used when calculating the timestep.
 
-Make sure there's no cross interactions!
 
 
 

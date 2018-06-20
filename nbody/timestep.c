@@ -288,7 +288,7 @@ void find_timesteps(int mode)
 	  
       if(dt < All.MinSizeTimestep) 
 	{
-	  if(P[i].Type==0)
+	  /*if(P[i].Type==0)
 	    {
 	      printf("warning: Timestep wants to be below the limit `MinSizeTimestep'\n");
 	      printf("Part-ID=%d  dt=%g dtc=%g ac=%g xyz=(%g|%g|%g)  sph: %g %g %g \n", 
@@ -300,7 +300,7 @@ void find_timesteps(int mode)
 	      printf("warning: Timestep wants to be below the limit `MinSizeTimestep'\n");
 	      printf("Part-ID=%d  dt=%g ac=%g xyz=(%g|%g|%g)\n", 
 		     P[i].ID, dt, ac, P[i].PosPred[0], P[i].PosPred[1], P[i].PosPred[2]);
-	    }
+	    }*/
 	  dt=All.MinSizeTimestep;
 	  /* NOTE: It's not good for the ordered binary tree if there
 	   * are many particles with EXACTLY the same timestep.

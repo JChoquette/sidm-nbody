@@ -12,7 +12,7 @@
 %
 
 
-InitCondFile   twocomp1e2_random
+InitCondFile   nfw_1e1small
 OutputDir      ./out
 
 EnergyFile        energy_out
@@ -27,7 +27,7 @@ SnapshotFileBase  snp
 
 % CrossSection is in cm^2/g for non-cosmological simulation
 % 1/h cm^2/g for cosmological simulation
-CrossSection1      100.0         # cm2/g
+CrossSection1      38         # cm2/g
 CrossSection2      0
 CrossSection3      0
 CrossSection4      0
@@ -89,7 +89,7 @@ CoolingOn 0
 %  Caracteristics of run
 
 TimeBegin             0.0  ; Internal Unit 10=Hubble Time
-TimeMax	            500.0  ; gravothermal collapse time is few hundered tr
+TimeMax	            5000.0  ; gravothermal collapse time is few hundered tr
 
 Omega0	              1.0
 OmegaLambda           0.0
@@ -105,7 +105,7 @@ PeriodicBoundariesOn   0
 OutputListFilename  lst_in
 OutputListOn        0
 
-TimeBetSnapshot        2.0
+TimeBetSnapshot        0.001
 TimeOfFirstSnapshot    0.0
  
 CpuTimeBetRestartFile  7200.0
@@ -121,7 +121,7 @@ ErrTolDynamicalAccuracy 0.004
 ErrTolVelScale          0.66       
 
 MaxSizeTimestep         0.1 
-MinSizeTimestep         0.0
+MinSizeTimestep         1.0e-5
 
 
 % Tree algorithm and force accuracy
@@ -175,14 +175,14 @@ GravityConstantInternal  0
 MinGasHsmlFractional     1.0  % minimum gas smoothing in terms of the gravitational softening length
 
 SofteningGas       600.0
-SofteningHalo      0.3  % Important; make this small enough
+SofteningHalo      0.1  % Important; make this small enough
 SofteningDisk      0.0
 SofteningBulge     0.0           
-SofteningStars     0.3
+SofteningStars     0.1
 
 SofteningGasMaxPhys       200.0
-SofteningHaloMaxPhys      0.3
+SofteningHaloMaxPhys      0.1
 SofteningDiskMaxPhys      0.0
 SofteningBulgeMaxPhys     0.0           
-SofteningStarsMaxPhys     0.3
+SofteningStarsMaxPhys     0.1
 

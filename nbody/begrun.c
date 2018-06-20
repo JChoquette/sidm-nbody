@@ -154,7 +154,7 @@ void set_units(void)
 
 #ifdef SIDM
   All.CrossSectionInternalMax=0.0;
-  for(int i = 0; i < 5; i++) {
+  for(int i = 0; i <= 5; i++) {
 	  All.CrossSectionInternal[i] = All.CrossSection[i]*All.UnitMass_in_g/pow(All.UnitLength_in_cm,2);
 	  if(All.CrossSectionInternal[i]>All.CrossSectionInternalMax)All.CrossSectionInternalMax = All.CrossSectionInternal[i];
   }

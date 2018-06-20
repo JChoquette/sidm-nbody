@@ -318,8 +318,9 @@ void advance(void)
 	  dt = 2*(All.Time - P[i].CurrentTime);  /*  the actual time-step */
 
 #ifdef SIDM
-	  if(P[i].dVel[0] != 0.0f)
+	  if(P[i].dVel[0] != 0.0f){
 	    scat_particles[n_scat_particles++]= i;
+	  }
 #endif  	  
 	  for(j=0; j<3; j++)  
 	    {

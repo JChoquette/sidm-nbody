@@ -6,11 +6,16 @@ import struct
 import pygadgetreader as pg
 import random
 
-with open('original_nfw', mode='rb') as file:
+original='icsM10'
+outfile='icsM10_random'
+
+with open(original, mode='rb') as file:
 	filecontent = file.read()
 	file.close()
 
-N=pg.readheader('original_nfw',"dmcount")
+N=pg.readheader(original,"dmcount")
+print N
+print struct.unpack("dddddd",filecontent[28:28+8*6])
 head=filecontent[0:268]
 PPos=[]
 PVel=[]
@@ -49,11 +54,11 @@ for i in range(N):
 filecontentnew=head+PPos2+filecontent[268+12*N:268+12*N+8]+PVel2+filecontent[276+24*N:276+24*N+8]+PID2+filecontent[284+28*N:284+28*N+4]
 	
 
-with open('nfw_random', mode='wb') as file:
+with open(outfile, mode='wb') as file:
 	file.write(filecontentnew)
 	file.close()
 
 #This just checks to make sure the file completed correctly
-filename='nfw_random'
+filename=outfile
 print pg.readheader(filename,"dmcount")
 print pg.readsnap(filename,"mass",'dm')[0]

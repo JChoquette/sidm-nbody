@@ -11,8 +11,8 @@ with open('nfw_random', mode='rb') as file:
 	file.close()
 
 #f is the SIDM fraction, Ndm is the total number of particles you want. This script randomly samples the input file, choosing f*Ndm particles to be SIDM and the remaining (f-1)*Ndm will be non-interacting (or rather will be of the second species). The reason for the random sampling is that I don't know how particles are distributed in the input file, there could be ordering (ex. lower radii are more likely at smaller array values)
-f=0.1
-Ndm=-1 #-1 for default (leave total number of particles unchanged). This removes the random sampling.
+f=1.0
+Ndm=100000 #-1 for default (leave total number of particles unchanged). This removes the random sampling.
 
 #This array lists the number of particles of each species
 N=struct.unpack("iiiiii",filecontent[4:28])
