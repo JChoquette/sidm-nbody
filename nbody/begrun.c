@@ -607,6 +607,12 @@ void read_parameter_file(char *fname)
       addr[nt]=&All.ProbabilityTol;
       id[nt++]=DOUBLE;
 
+#if (DISSIPATION_TYPE == 1)
+      strcpy(tag[nt],"DissipativeLoss");
+      addr[nt]=&All.DissipativeLoss;
+      id[nt++]=DOUBLE;
+#endif
+
 #if (CROSS_SECTION_TYPE == 2 || CROSS_SECTION_TYPE == 4)
       strcpy(tag[nt],"YukawaVelocity"); 
       addr[nt]=&All.YukawaVelocity;

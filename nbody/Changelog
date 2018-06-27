@@ -1,3 +1,5 @@
+MULTIPLE CROSS SECTIONS =====================================================
+
 allvars.h:
 399: CrossSection -> CrossSection[6], making this an array
 401: CrossSectionInternal -> CrossSectionInternal[6], making this an array
@@ -10,9 +12,45 @@ Added lines to read 5 cross sections from the parameter file
 sidm.c:
 Turned CrossSectionCo, C_Pmax, Pmax into arrays
 
+timestep.c
+Use each particle's cross section when calculating its timestep
+
+DISSIPATIVE DARK MATTER =====================================================
+
+For dissipative dark matter, we take into account energy lost due to hyperfine transitions. This will be Delta KE = -2m_H(m^2_H*-m^2_H)/4m^2_H PER PARTICLE according to 1609.03592 (between eqs 25 and 26).
+         ~ 10^-4 E_O in their analysis, with E_0=alpha^2*mu_H
+
+To find the probability of this happening, I guess multiply this by sigma++/sigma (ratio of upscattering cs to scattering cs). Problem is that sigma++ is model-dependent and also velocity-dependent. It depends a hell of a lot on alpha and mu_H, and the E_hf~10^-4 E_0 seems like really more of a guess than anything else. So maybe we could just have all collisions lose ~10^-4 E_0. They have a sharp cutoff however at speeds of ~40km/s where the upscattering probability goes to 0.
+This is presumably because we must have Ek>2Ehf, so mHv^2/2>2*10^-4 alpha^2 mu_H => v>4*10^-2*alpha/sqrt(f(R))=4*10^-2*sqrt(3Ehf/8E0)=4*6*10^-5 =38 km/s. So what we can do is introduce the variable DissipativeLoss, the amount of energy lost as a fraction of the mass
 
 
+allvars.h:
+Added float DissipativeLoss, which will be the energy lost in each scattering as a fraction of the DM mass. Then for hyperfine interactions, DissipativeLoss=(Ehf/E0)^2*3/8
 
+begrun.c:
+Added line to read DissipativeLoss from the parameter file
+
+sidm.c:
+around line 454, we find: 
+	dvx= rmass*(-rvx+rv*nx[0]);
+	dvy= rmass*(-rvy+rv*nx[1]);
+	dvz= rmass*(-rvz+rv*nx[2]);
+This should be replaced with:
+	float dvcm = sqrt(rv**2-4*All.DissipativeLoss/rmass*(All.C/All.UnitVelocity_in_cm_per_s)**2); //note the conversion factor here
+	if(dvcm!=dvcm) dvcm=rv;
+	dvx= rmass*(-rvx+dvcm*nx[0]);
+	dvy= rmass*(-rvy+dvcm*nx[1]);
+	dvz= rmass*(-rvz+dvcm*nx[2]);
+This adds in the dissipation for cross sections types <4. We can add cross section type 4 later if need be.
+
+Now we need to ensure the target is also correctly adjusted. Around line 575:
+        P[SidmTarget[j]].dVel[0] = -SidmDataResult[j].dv[0];
+        P[SidmTarget[j]].dVel[1] = -SidmDataResult[j].dv[1];
+        P[SidmTarget[j]].dVel[2] = -SidmDataResult[j].dv[2];
+However, this appears to already have an error in it. The code is meant to be able to accept different sidm masses, in which case the differences in momentum, not velocity, must be the same:
+        P[SidmTarget[j]].dVel[0] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[0];
+        P[SidmTarget[j]].dVel[1] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[1];
+        P[SidmTarget[j]].dVel[2] = -SidmDataIn[j].Mass/P[SidmTarget[j]].Mass*SidmDataResult[j].dv[2];
 
 
 

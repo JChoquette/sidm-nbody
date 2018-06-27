@@ -33,6 +33,8 @@ CrossSection3      0
 CrossSection4      0
 CrossSection5      0
 % in internal unit this is sigma0.internal = m.unit/l.unit^2*sigma = 79.9272
+%DissipativeLoss    1.0e-08
+
 
 % Relaxation time is
 % tr = 1/(a rho0 sigma vs) = 0.83969 [internal unit]
