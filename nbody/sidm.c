@@ -451,12 +451,27 @@ void sidm(void)
 	// Sep 19, 2005
 #if (CROSS_SECTION_TYPE < 4)
 	// isotropic scattering
+#if (DISSIPATION_TYPE == 1)
 	random_direction(nx);
 	float dvcm = sqrt(pow(rv,2)-4*All.DissipativeLoss/rmass*pow(C/All.UnitVelocity_in_cm_per_s,2));
 	if(dvcm!=dvcm) dvcm=rv;
 	dvx= rmass*(-rvx+dvcm*nx[0]);
 	dvy= rmass*(-rvy+dvcm*nx[1]);
 	dvz= rmass*(-rvz+dvcm*nx[2]);
+#endif
+#if (DISSIPATION_TYPE == 0)
+	random_direction(nx);
+	dvx= rmass*(-rvx+rv*nx[0]);
+	dvy= rmass*(-rvy+rv*nx[1]);
+	dvz= rmass*(-rvz+rv*nx[2]);
+#endif
+#if (DISSIPATION_TYPE == 2)
+	dvx= rmass*(-rvx);
+	dvy= rmass*(-rvy);
+	dvz= rmass*(-rvz);
+#endif
+
+
 #endif
 	
         SidmDataResult[i].dv[0]= dvx;
