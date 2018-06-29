@@ -452,6 +452,10 @@ void read_parameter_file(char *fname)
       addr[nt]=&All.MinSizeTimestep;
       id[nt++]=DOUBLE;
 
+      strcpy(tag[nt],"CutoffTimestep"); 
+      addr[nt]=&All.CutoffTimestep;
+      id[nt++]=DOUBLE;
+
       strcpy(tag[nt],"ArtBulkViscConst"); 
       addr[nt]=&All.ArtBulkViscConst;
       id[nt++]=DOUBLE;

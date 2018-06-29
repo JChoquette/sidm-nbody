@@ -97,6 +97,13 @@ int main(int argc, char **argv)
 #elif (CROSS_SECTION_TYPE == 4)
     fprintf(stdout, "CROSS_SECTION_TYPE=4. Yukawa Interaction.\n");
 #endif
+#if (DISSIPATION_TYPE == 0)
+    fprintf(stdout, "DISSIPATION_TYPE=0. Elastic.\n");  
+#elif (DISSIPATION_TYPE == 1)
+    fprintf(stdout, "DISSIPATION_TYPE=1. Inelastic.\n"); 
+#elif (DISSIPATION_TYPE == 2)
+    fprintf(stdout, "DISSIPATION_TYPE=2. Perfectly inelastic.\n"); 
+#endif
   }
 
   t1=second();

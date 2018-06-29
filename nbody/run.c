@@ -42,6 +42,8 @@ void run(void)
       if(All.Time > All.TimeMax)
 	All.Time = All.TimeMax;
       
+      printf("Timestep: %f\nCutoff: %f\n",All.TimeStep,All.CutoffTimestep);
+      if(All.TimeStep<=All.CutoffTimestep){printf("Reached cutoff timestep.\n");break;}
 #ifdef COOLING
       IonizeParams();
 #endif

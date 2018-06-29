@@ -12,7 +12,7 @@
 %
 
 
-InitCondFile   nfw_1e1small
+InitCondFile   bump_SMALL1e1
 OutputDir      ./out
 
 EnergyFile        energy_out
@@ -27,13 +27,13 @@ SnapshotFileBase  snp
 
 % CrossSection is in cm^2/g for non-cosmological simulation
 % 1/h cm^2/g for cosmological simulation
-CrossSection1      3800         # cm2/g
+CrossSection1      3800.0         # cm2/g
 CrossSection2      0
 CrossSection3      0
 CrossSection4      0
 CrossSection5      0
 % in internal unit this is sigma0.internal = m.unit/l.unit^2*sigma = 79.9272
-%DissipativeLoss    1.0e-08
+DissipativeLoss    1.0e-08
 
 
 % Relaxation time is
@@ -49,8 +49,8 @@ CrossSection5      0
 % Power-law cross section (CROSS_SECTION_TYPE=3)
 % sigma = sigma0*(vrel/v0)^alpha
 % simga0
-% CrossSectionVelScale 100.0  # v0
-% CrossSectionPowLaw   -3.0   # alpha
+CrossSectionVelScale 100.0  # v0
+CrossSectionPowLaw   -0.5   # alpha
 
 % Yukawa cross section (CROSS_SECTION_TYPE=4)
 % dsigma/dOmega = sigma0/4pi/[ 1 + (v/vY)^2 sin^2 (theta/2) ]^2
@@ -69,7 +69,7 @@ ProbabilityTol    0.2
 
 % Reflection boundary for isolatioed halo
 % set OPT   +=  -DREFLECTIONBOUNDARY in Makefile
-ReflectionBoundary  1114.35    # 100 r_c
+%ReflectionBoundary  1114.35    # 100 r_c
 
 % CPU-time limit
 
@@ -81,7 +81,7 @@ ResubmitCommand   xyz
 % Code options
 
 ICFormat              1
-ComovingIntegrationOn 0
+ComovingIntegrationOn 1
 
 NumFilesPerSnapshot       1
 NumFilesWrittenInParallel 2
@@ -90,16 +90,16 @@ CoolingOn 0
 
 %  Caracteristics of run
 
-TimeBegin             0.0  ; Internal Unit 10=Hubble Time
-TimeMax	            5000.0  ; gravothermal collapse time is few hundered tr
+TimeBegin             0.015625  ; Internal Unit 10=Hubble Time
+TimeMax	            1.0  ; gravothermal collapse time is few hundered tr
 
-Omega0	              1.0
-OmegaLambda           0.0
+Omega0	              0.3
+OmegaLambda           0.7
 OmegaBaryon           0.0
 HubbleParam           0.7   ; only needed for cooling
 
-BoxSize                0.0
-PeriodicBoundariesOn   0
+BoxSize                2000.0
+PeriodicBoundariesOn   1
 
 
 % Output frequency
@@ -107,8 +107,8 @@ PeriodicBoundariesOn   0
 OutputListFilename  lst_in
 OutputListOn        0
 
-TimeBetSnapshot        0.001
-TimeOfFirstSnapshot    0.0
+TimeBetSnapshot        1.1
+TimeOfFirstSnapshot    0.015625
  
 CpuTimeBetRestartFile  7200.0
 
@@ -123,8 +123,7 @@ ErrTolDynamicalAccuracy 0.004
 ErrTolVelScale          0.66       
 
 MaxSizeTimestep         0.1 
-MinSizeTimestep         0.0
-CutoffTimestep		1.0e-9 %ends the run when the timestep reaches this cutoff
+MinSizeTimestep         1.0e-6
 
 
 % Tree algorithm and force accuracy
@@ -178,14 +177,14 @@ GravityConstantInternal  0
 MinGasHsmlFractional     1.0  % minimum gas smoothing in terms of the gravitational softening length
 
 SofteningGas       600.0
-SofteningHalo      0.1  % Important; make this small enough
+SofteningHalo      0.3  % Important; make this small enough
 SofteningDisk      0.0
 SofteningBulge     0.0           
-SofteningStars     0.1
+SofteningStars     0.3
 
 SofteningGasMaxPhys       200.0
-SofteningHaloMaxPhys      0.1
+SofteningHaloMaxPhys      0.3
 SofteningDiskMaxPhys      0.0
 SofteningBulgeMaxPhys     0.0           
-SofteningStarsMaxPhys     0.1
+SofteningStarsMaxPhys     0.3
 

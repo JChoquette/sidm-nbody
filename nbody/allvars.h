@@ -337,7 +337,8 @@ extern struct global_data_all_processes
   double  ErrTolDynamicalAccuracy; /* March 24 */
   double  ErrTolVelScale;     /* for 1/a  collisionless timestep criterion */
   double  MinSizeTimestep,
-          MaxSizeTimestep;
+          MaxSizeTimestep,
+	  CutoffTimestep;
 
   double  CourantFac;      /* SPH-Courant factor */
  
@@ -431,8 +432,8 @@ extern struct particle_data
   int4byte  ID;           /* unique particle identifier */  
   int4byte  Type;         /* flags particle type. 0=gas, 1=halo, 2=disk, 3=bulge, 4=stars */
 
-  float     CurrentTime;  /* current time of the particle */
-  float     MaxPredTime;  /* current time plus half the particles allowed timestep */
+  double     CurrentTime;  /* current time of the particle */
+  double     MaxPredTime;  /* current time plus half the particles allowed timestep */
   float     PosPred[3];   /* particle position at the global prediction time */   
   float     VelPred[3];   /* particle velocity at the global prediction time */
 
