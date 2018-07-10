@@ -611,7 +611,7 @@ void read_parameter_file(char *fname)
       addr[nt]=&All.ProbabilityTol;
       id[nt++]=DOUBLE;
 
-#if (DISSIPATION_TYPE == 1)
+#if (DISSIPATION_TYPE > 0)
       strcpy(tag[nt],"DissipativeLoss");
       addr[nt]=&All.DissipativeLoss;
       id[nt++]=DOUBLE;

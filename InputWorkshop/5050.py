@@ -6,15 +6,17 @@ import struct
 import pygadgetreader as pg
 import random
 
-infile='cone_BIG'
-outfile='cone_BIG1e1'
+#infile='smoothbump_MED'
+#outfile='ICDIR/smoothbump_'+str(int(float(sys.argv[1])*100))+'_MED'
+infile='100kparticles'
+outfile='nfw_small'
 
 with open(infile, mode='rb') as file:
 	filecontent = file.read()
 	file.close()
 
 #f is the SIDM fraction, Ndm is the total number of particles you want. This script takes the random NFW profile (as input) and makes half the dark matter particles non-interacting. It then adjusts the masses so as to give the desired SIDM fraction (by mass).
-f=0.1
+f=float(sys.argv[1])
 Ndm=-1 #-1 for default (leave total number of particles unchanged). This removes the random sampling.
 
 #This array lists the number of particles of each species

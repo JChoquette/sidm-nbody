@@ -360,8 +360,10 @@ void sidm(void)
         j  = ngblist[n]+1; 
         r  = sqrt(r2list[n]); /* There was a BUG! */
 
-	if(P[j].dVel[0] != 0.0f)
+	if(P[j].dVel[0] != 0.0f){
+	  printf("Tried to double scatter\n");
 	  continue; // No double scattering. Oct 9, 2005
+	}
         
         if(r < h) {
           u = r*hinv;
@@ -388,11 +390,12 @@ void sidm(void)
 #elif (CROSS_SECTION_TYPE == 4)
         Prob += 0.5*P[j].Mass*wk*rv*CrossSectionCo[SidmDataIn[i].Type]*dt_h0;
 #endif
-        if(Prob>0 && SidmDataIn[i].Type>1) printf("P>0 FOR WRONG PARTICLE TYPE");
-        if(SidmDataIn[i].Type >1) printf("BAD CS: P1.Type=%i CS=%g\n",SidmDataIn[i].Type,CrossSectionCo[SidmDataIn[i].Type]);
+        //if(Prob>0 && SidmDataIn[i].Type>1) printf("P>0 FOR WRONG PARTICLE TYPE");
+        //if(SidmDataIn[i].Type >1) printf("BAD CS: P1.Type=%i CS=%g\n",SidmDataIn[i].Type,CrossSectionCo[SidmDataIn[i].Type]);
         if(Prob < rand)
           continue;
-	if((P[j].Type & 7) >1) printf("BAD SCATTER: P1.Type=%i P2.Type=%i\n",SidmDataIn[i].Type,P[j].Type & 7);
+	printf("Scatter\n");
+	//if((P[j].Type & 7) >1) printf("BAD SCATTER: P1.Type=%i P2.Type=%i\n",SidmDataIn[i].Type,P[j].Type & 7);
 
 	SidmTarget[i] = j;
         rmass = P[j].Mass / (SidmDataIn[i].Mass + P[j].Mass);
@@ -469,9 +472,9 @@ void sidm(void)
 	dvz= rmass*(-rvz+rv*nx[2]);
 #endif
 #if (DISSIPATION_TYPE == 2)
-	dvx= rmass*(-rvx);
-	dvy= rmass*(-rvy);
-	dvz= rmass*(-rvz);
+	dvx= rmass*(-rvx+All.DissipativeLoss*rv*nx[0]);
+	dvy= rmass*(-rvy+All.DissipativeLoss*rv*nx[1]);
+	dvz= rmass*(-rvz+All.DissipativeLoss*rv*nx[2]);
 #endif
 
 

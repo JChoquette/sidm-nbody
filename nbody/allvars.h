@@ -401,7 +401,7 @@ extern struct global_data_all_processes
       /* CROSS_SECTION_TYPE=1 => CrossSection=sigma*(v km/s) hinv cm2/g */
   double  CrossSectionInternal[6];
   double  CrossSectionInternalMax;
-#if (DISSIPATION_TYPE == 1)
+#if (DISSIPATION_TYPE > 0)
   double  DissipativeLoss;
 #endif
 #if (CROSS_SECTION_TYPE == 2 || CROSS_SECTION_TYPE == 4)

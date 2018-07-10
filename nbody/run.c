@@ -39,11 +39,38 @@ void run(void)
                              determines which particles are grouped together
                              for force evaluation */
 
-      if(All.Time > All.TimeMax)
+      if(All.Time > All.TimeMax){
 	All.Time = All.TimeMax;
+	if(ThisTask==0){
+	printf("Reached max time.\n");
+
+	FILE *f = fopen("outputs.txt", "a");
+	if (f == NULL)
+	{
+	    printf("Error opening file!\n");
+	    exit(1);
+	}
+
+	fprintf(f, "CS: %f, REACHED MAX TIME AT: %f\n", All.CrossSection[1], All.Time);
+
+	fclose(f);}
+      }
       
-      printf("Timestep: %f\nCutoff: %f\n",All.TimeStep,All.CutoffTimestep);
-      if(All.TimeStep<=All.CutoffTimestep){printf("Reached cutoff timestep.\n");break;}
+      if(All.TimeStep<=All.CutoffTimestep){
+	if(ThisTask==0){
+	printf("Reached cutoff timestep.\n");
+	FILE *f = fopen("outputs.txt", "a");
+	if (f == NULL)
+	{
+	    printf("Error opening file!\n");
+	    exit(1);
+	}
+
+	fprintf(f, "CS: %f, REACHED CUTOFF AT: %f\n", All.CrossSection[1], All.Time);
+
+	fclose(f);}
+	break;
+      }
 #ifdef COOLING
       IonizeParams();
 #endif

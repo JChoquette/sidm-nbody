@@ -12,22 +12,22 @@
 %
 
 
-InitCondFile   nfw_1e1small
+InitCondFile   NFW_INITCOND_small
 OutputDir      ./out
 
 EnergyFile        energy_out
-InfoFile          info_out
+InfoFile          info_out_INITCOND_SIDMCROSSSECTION
 TimingsFile       timings_out
 CpuFile           cpu_out
 
 RestartFile       rst_out
-SnapshotFileBase  snp
+SnapshotFileBase  snp_INITCOND_SIDMCROSSSECTION
 
 % SIDM
 
 % CrossSection is in cm^2/g for non-cosmological simulation
 % 1/h cm^2/g for cosmological simulation
-CrossSection1      3800         # cm2/g
+CrossSection1      SIDMCROSSSECTION         # cm2/g
 CrossSection2      0
 CrossSection3      0
 CrossSection4      0
@@ -69,7 +69,7 @@ ProbabilityTol    0.2
 
 % Reflection boundary for isolatioed halo
 % set OPT   +=  -DREFLECTIONBOUNDARY in Makefile
-ReflectionBoundary  1114.35    # 100 r_c
+%ReflectionBoundary  1114.35    # 100 r_c
 
 % CPU-time limit
 
@@ -81,7 +81,7 @@ ResubmitCommand   xyz
 % Code options
 
 ICFormat              1
-ComovingIntegrationOn 0
+ComovingIntegrationOn 1
 
 NumFilesPerSnapshot       1
 NumFilesWrittenInParallel 2
@@ -90,16 +90,16 @@ CoolingOn 0
 
 %  Caracteristics of run
 
-TimeBegin             0.0  ; Internal Unit 10=Hubble Time
-TimeMax	            5000.0  ; gravothermal collapse time is few hundered tr
+TimeBegin             0.015625  ; Internal Unit 10=Hubble Time
+TimeMax	            0.0625  ; gravothermal collapse time is few hundered tr
 
-Omega0	              1.0
-OmegaLambda           0.0
+Omega0	              0.3
+OmegaLambda           0.7
 OmegaBaryon           0.0
 HubbleParam           0.7   ; only needed for cooling
 
-BoxSize                0.0
-PeriodicBoundariesOn   0
+BoxSize                3000.0
+PeriodicBoundariesOn   1
 
 
 % Output frequency
@@ -107,8 +107,8 @@ PeriodicBoundariesOn   0
 OutputListFilename  lst_in
 OutputListOn        0
 
-TimeBetSnapshot        0.001
-TimeOfFirstSnapshot    0.0
+TimeBetSnapshot        2
+TimeOfFirstSnapshot    0.015625
  
 CpuTimeBetRestartFile  7200.0
 
@@ -178,14 +178,14 @@ GravityConstantInternal  0
 MinGasHsmlFractional     1.0  % minimum gas smoothing in terms of the gravitational softening length
 
 SofteningGas       600.0
-SofteningHalo      0.1  % Important; make this small enough
+SofteningHalo      0.5  % Important; make this small enough
 SofteningDisk      0.0
 SofteningBulge     0.0           
-SofteningStars     0.1
+SofteningStars     0.5
 
 SofteningGasMaxPhys       200.0
-SofteningHaloMaxPhys      0.1
+SofteningHaloMaxPhys      0.5
 SofteningDiskMaxPhys      0.0
 SofteningBulgeMaxPhys     0.0           
-SofteningStarsMaxPhys     0.1
+SofteningStarsMaxPhys     0.5
 

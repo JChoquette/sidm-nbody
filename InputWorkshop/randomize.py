@@ -6,8 +6,8 @@ import struct
 import pygadgetreader as pg
 import random
 
-original='icsM10'
-outfile='icsM10_random'
+original='icsMED'
+outfile='icsMED_random'
 
 with open(original, mode='rb') as file:
 	filecontent = file.read()
