@@ -472,9 +472,18 @@ void sidm(void)
 	dvz= rmass*(-rvz+rv*nx[2]);
 #endif
 #if (DISSIPATION_TYPE == 2)
-	dvx= rmass*(-rvx+All.DissipativeLoss*rv*nx[0]);
-	dvy= rmass*(-rvy+All.DissipativeLoss*rv*nx[1]);
-	dvz= rmass*(-rvz+All.DissipativeLoss*rv*nx[2]);
+	if(P[i].ScatterFlag!=1&&P[j].ScatterFlag!=1){
+		dvx= rmass*(-rvx+All.DissipativeLoss*rv*nx[0]);
+		dvy= rmass*(-rvy+All.DissipativeLoss*rv*nx[1]);
+		dvz= rmass*(-rvz+All.DissipativeLoss*rv*nx[2]);
+		P[i].ScatterFlag=1;
+		P[j].ScatterFlag=1;
+	}else{
+		random_direction(nx);
+		dvx= rmass*(-rvx+rv*nx[0]);
+		dvy= rmass*(-rvy+rv*nx[1]);
+		dvz= rmass*(-rvz+rv*nx[2]);
+	}
 #endif
 
 

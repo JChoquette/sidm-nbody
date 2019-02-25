@@ -12,7 +12,7 @@
 %
 
 
-InitCondFile   cloud_trimmed
+InitCondFile   cone40
 OutputDir      ./out
 
 EnergyFile        energy_out
@@ -88,7 +88,7 @@ CoolingOn 0
 
 %  Caracteristics of run
 
-TimeBegin             0.015625  ; Internal Unit 10=Hubble Time
+TimeBegin             0.02439  ; Internal Unit 10=Hubble Time
 TimeMax	            1.0  ; gravothermal collapse time is few hundered tr
 
 Omega0	              0.3
@@ -96,8 +96,8 @@ OmegaLambda           0.7
 OmegaBaryon           0.0
 HubbleParam           0.7   ; only needed for cooling
 
-BoxSize                1000.0
-PeriodicBoundariesOn   0
+BoxSize                2000.0
+PeriodicBoundariesOn   1
 
 
 % Output frequency
@@ -106,7 +106,7 @@ OutputListFilename  lst_in
 OutputListOn        0
 
 TimeBetSnapshot        1.1
-TimeOfFirstSnapshot    0.015625
+TimeOfFirstSnapshot    0.02439
  
 CpuTimeBetRestartFile  7200.0
 
@@ -121,7 +121,8 @@ ErrTolDynamicalAccuracy 0.004
 ErrTolVelScale          0.66       
 
 MaxSizeTimestep         0.1 
-MinSizeTimestep         0.0
+MinSizeTimestep         1.0e-6
+CutoffTimestep		0.0 %ends the run when the timestep reaches this cutoff
 
 
 % Tree algorithm and force accuracy

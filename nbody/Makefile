@@ -37,7 +37,7 @@ OPT   += -DCROSS_SECTION_TYPE=0
 # 3: Power law   (sigma ~ v^-n)
 # 4: Yukawa interaction
 
-OPT   += -DDISSIPATION_TYPE=0
+OPT   += -DDISSIPATION_TYPE=2
 #0: No dissipation
 #1: Inelastic scattering, must specify Eloss/m in parameter file
 #2: Perfectly inelastic scattering

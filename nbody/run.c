@@ -17,6 +17,9 @@
 void run(void)    
 {
   FILE   *fd;
+  char outputfilename[200];
+  strcpy(outputfilename,All.OutputDir);
+  strcat(outputfilename,"/outputs.txt");
   int    i, stopflag=0;
   double savetime;
   char   buf[200],stopfname[200];
@@ -44,7 +47,7 @@ void run(void)
 	if(ThisTask==0){
 	printf("Reached max time.\n");
 
-	FILE *f = fopen("outputs.txt", "a");
+	FILE *f = fopen(outputfilename, "a");
 	if (f == NULL)
 	{
 	    printf("Error opening file!\n");
@@ -59,7 +62,7 @@ void run(void)
       if(All.TimeStep<=All.CutoffTimestep){
 	if(ThisTask==0){
 	printf("Reached cutoff timestep.\n");
-	FILE *f = fopen("outputs.txt", "a");
+	FILE *f = fopen(outputfilename, "a");
 	if (f == NULL)
 	{
 	    printf("Error opening file!\n");

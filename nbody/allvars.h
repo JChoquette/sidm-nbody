@@ -432,6 +432,10 @@ extern struct particle_data
   int4byte  ID;           /* unique particle identifier */  
   int4byte  Type;         /* flags particle type. 0=gas, 1=halo, 2=disk, 3=bulge, 4=stars */
 
+#if (DISSIPATION_TYPE == 2)
+  int4byte ScatterFlag;
+#endif
+
   double     CurrentTime;  /* current time of the particle */
   double     MaxPredTime;  /* current time plus half the particles allowed timestep */
   float     PosPred[3];   /* particle position at the global prediction time */   
